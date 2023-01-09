@@ -1,5 +1,7 @@
 
-{% block title %}Détails bien{% endblock %}
+{% extends 'base.html.twig' %}
+{% form_theme commentForm'bootstrap_4_layout.html.twig'%}
+{% block title %}Post Show{% endblock %}
 {% block body %}
 <style>
     .post{
@@ -23,6 +25,7 @@
   <h4 class="card-header"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{post.intitule}}</font></font></h4>
   <div class="card-body">
     <h5 class="card-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Localisation: {{post.localisation}}</font></font></h5>
+    <img src="https://picsum.photos/300/200?grayscale" alt="" class="mt-3 mb-3">
     <h6 class="card-subtitle text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Type : {{post.descriptif}}</font></font></h6>
   </div>
   <div class="card-body">
@@ -42,4 +45,9 @@
 </section>
 
 <hr>
+<h2>Add Comment</h2>
+{{form_start(commentForm)}}
+    {{form_widget(commentForm)}}
+        <button class="btn btn-success mt-5">Add a Comment</button>
+    {{ form_end(commentForm)}}
 {% endblock%}

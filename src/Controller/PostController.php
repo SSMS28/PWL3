@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+
 use App\Repository\PostRepository;
 use App\Entity\Post;
 use App\Entity\SearchTerrain;
@@ -13,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+
+
+
 
 
 class PostController extends AbstractController
@@ -165,14 +169,17 @@ class PostController extends AbstractController
     /**
      * @Route("/post/new",name="post_new")
      */
-    public function create(Request $request, PersistenceManagerRegistry $doctrine)
+    /**
+     * @Route("/post/new",name="post_new")
+     */
+    public function create(Request $request)
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
             if($form->isSubmitted() && $form->isValid())
             {
-                $entityManager = $doctrine() ->getManager();
+                $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($post);
                 $entityManager->flush();
                 $this->addFlash(
@@ -191,18 +198,37 @@ class PostController extends AbstractController
     /**
      * @Route("/post/{id}", name="post_show")
      */
+
+    // public function show(Request $request , PostRepository $postRepository)
+    // {
+    //     $postId = $request->attributes->get('id');
+    //     $post = $postRepository->find($postId);
+
+    //     $comment = new Comment();
+    //     $commentForm = $this->createForm(CommentType::class, $comment);
+    //     $commentForm->handleRequest($request);
+    //     $this->addComment($commentForm, $comment, $post);
+    //     return $this->render('post/show.html.twig' , [
+    //         'post' => $post,
+    //         'commentForm'=> $commentForm->createView()
+    //     ]);
+    // }
+
+    /**
+     * @Route("/post/{id}", name="post_show")
+     */
     public function show(Request $request , PostRepository $postRepository)
     {
         $postId = $request->attributes->get('id');
         $post = $postRepository->find($postId);
 
-        //$comment = new Comment();
-        //$commentForm = $this->createForm(CommentType::class, $comment);
-        //$commentForm->handleRequest($request);
-        //$this->addComment($commentForm, $comment, $post);
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+        $this->addComment($commentForm, $comment, $post);
         return $this->render('post/show.html.twig' , [
             'post' => $post,
-            //'commentForm'=> $commentForm->createView()
+            'commentForm'=> $commentForm->createView()
         ]);
     }
     /**
@@ -228,14 +254,17 @@ class PostController extends AbstractController
             'editForm' => $form->createView()
         ]);
     }
+    
+
     //Add comment 
-    private function addComment($commentForm, $comment, $post,PersistenceManagerRegistry $doctrine)
+    
+    private function addComment($commentForm, $comment, $post)
     {
         if($commentForm->isSubmitted() && $commentForm->isValid())
         {
             $comment->setCreatedAt(new \DateTimeImmutable());
             $comment->setPost($post);
-            $entityManager = $doctrine()->getManager();
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush(); 
             $this->addFlash(

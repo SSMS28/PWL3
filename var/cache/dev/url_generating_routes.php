@@ -16,6 +16,7 @@ return [
     '_profiler_router' => [['token'], ['_controller' => 'web_profiler.controller.router::panelAction'], [], [['text', '/router'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     '_profiler_exception' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::body'], [], [['text', '/exception'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
+    'admin' => [[], ['_controller' => 'App\\Controller\\Admin\\DashboardController::index'], [], [['text', '/admin']], [], [], []],
     'app_favoris' => [[], ['_controller' => 'App\\Controller\\FavorisController::index'], [], [['text', '/favoris']], [], [], []],
     'favoris_add' => [['id'], ['_controller' => 'App\\Controller\\FavorisController::add'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/favoris/add']], [], [], []],
     'favoris_remove' => [['id'], ['_controller' => 'App\\Controller\\FavorisController::remove'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/favoris/remove']], [], [], []],

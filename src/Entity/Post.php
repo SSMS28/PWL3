@@ -137,4 +137,9 @@ class Post
 
         return $this;
     }
+
+    public function getDoctrine(): ?string
+    {
+        return $this->categorie;
+    }
 }
